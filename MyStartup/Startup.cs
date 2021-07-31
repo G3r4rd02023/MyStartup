@@ -42,6 +42,7 @@ namespace MyStartup
 
             services.AddScoped<IUserHelper, UserHelper>();
             services.AddTransient<SeedDb>();
+            services.AddScoped<ICombosHelper, CombosHelper>();
             services.AddControllersWithViews();
         }
 
