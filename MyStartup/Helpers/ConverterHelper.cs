@@ -34,5 +34,25 @@ namespace MyStartup.Helpers
                 Name = category.Name
             };
         }
+
+        public Company ToCompany(CompanyViewModel model, bool isNew, string path)
+        {
+            return new Company
+            {
+                Id = isNew ? 0 : model.Id,
+                ImageUrl = path,
+                Name = model.Name
+            };
+        }
+
+        public CompanyViewModel ToCompanyViewModel(Company company)
+        {
+            return new CompanyViewModel
+            {
+                Id = company.Id,
+                ImageUrl = company.ImageUrl,
+                Name = company.Name
+            };
+        }
     }
 }
