@@ -30,6 +30,8 @@ namespace MyStartup.Data.Entities
 
         public Category Category { get; set; }
 
+        public Company Company { get; set; }
+
         public ICollection<ProductImage> ProductImages { get; set; }
 
         public string FirstImage

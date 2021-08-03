@@ -18,6 +18,6 @@ namespace MyStartup.Data.Entities
         // TODO: Change the path when publish
         public string ImageFullPath => string.IsNullOrEmpty(ImageUrl)
             ? null
-            : $"https://myleasing.azurewebsites.net{ImageUrl[1..]}";
+            : $"https://localhost:44385{ImageUrl[1..]}";
     }
 }

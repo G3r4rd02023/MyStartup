@@ -1,10 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MyStartup.Data.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace MyStartup.Data
 {
@@ -15,6 +11,10 @@ namespace MyStartup.Data
         }        
         public DbSet<Category> Categories { get; set; }
         public DbSet<Country> Countries { get; set; }
+
+        public DbSet<Company> Companies { get; set; }
+
+        public DbSet<CompanyCustomer> CompanyCustomers { get; set; }
         public DbSet<City> Cities { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Manager> Managers { get; set; }
