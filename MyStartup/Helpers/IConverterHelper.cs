@@ -1,5 +1,6 @@
 ﻿using MyStartup.Data.Entities;
 using MyStartup.Models;
+using System.Threading.Tasks;
 
 namespace MyStartup.Helpers
 {
@@ -11,7 +12,11 @@ namespace MyStartup.Helpers
 
         Company ToCompany(CompanyViewModel model, bool isNew, string path);
 
-        CompanyViewModel ToCompanyViewModel(Company company); 
+        CompanyViewModel ToCompanyViewModel(Company company);
+
+        Task<Product> ToProductAsync(ProductViewModel model, bool isNew, string path);
+
+        ProductViewModel ToProductViewModel(Product product);
 
     }
 }

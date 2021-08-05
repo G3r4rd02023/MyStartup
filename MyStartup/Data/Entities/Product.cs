@@ -40,10 +40,10 @@ namespace MyStartup.Data.Entities
             {
                 if (ProductImages == null || ProductImages.Count == 0)
                 {
-                    return "https://myleasing.azurewebsites.net/images/Properties/noImage.png";
+                    return "https://localhost:44385/wwwroot/images/App/noImage.png";
                 }
 
-                return ProductImages.FirstOrDefault().ImageUrl;
+                return ProductImages.FirstOrDefault().ImageFullPath;
             }
         }
 
