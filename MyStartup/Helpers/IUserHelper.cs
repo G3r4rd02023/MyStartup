@@ -8,7 +8,7 @@ namespace MyStartup.Helpers
     public interface IUserHelper
     {
         Task<User> GetUserByEmailAsync(string email);
-
+        Task<User> GetUserAsync(string email);
         Task<IdentityResult> AddUserAsync(User user, string password);
 
         Task CheckRoleAsync(string roleName);

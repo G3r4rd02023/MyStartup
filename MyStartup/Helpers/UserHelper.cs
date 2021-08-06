@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using MyStartup.Data;
 using MyStartup.Data.Entities;
 using MyStartup.Models;
 using System.Threading.Tasks;
@@ -11,15 +13,18 @@ namespace MyStartup.Helpers
             private readonly UserManager<User> _userManager;
             private readonly RoleManager<IdentityRole> _roleManager;
             private readonly SignInManager<User> _signInManager;
+            private readonly DataContext _context;
 
             public UserHelper(
                     UserManager<User> userManager,
                     RoleManager<IdentityRole> roleManager,
-                    SignInManager<User> signInManager)
+                    SignInManager<User> signInManager,
+                    DataContext context)
                 {
                     _userManager = userManager;
                     _roleManager = roleManager;
                     _signInManager = signInManager;
+                    _context = context;
                 }
 
 
@@ -102,6 +107,13 @@ namespace MyStartup.Helpers
         public async Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword)
         {
             return await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+        }
+
+        public async Task<User> GetUserAsync(string email)
+        {
+            return await _context.Users
+                .Include(u => u.City)
+                .FirstOrDefaultAsync(u => u.Email == email);
         }
 
     }

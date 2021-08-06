@@ -8,5 +8,7 @@ namespace MyStartup.Helpers
         IEnumerable<SelectListItem> GetComboRoles();
 
         IEnumerable<SelectListItem> GetComboCategories();
+
+        IEnumerable<SelectListItem> GetComboProducts();
     }
 }

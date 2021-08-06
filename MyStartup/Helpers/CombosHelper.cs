@@ -43,5 +43,25 @@ namespace MyStartup.Helpers
 
             return list;
         }
+
+        public IEnumerable<SelectListItem> GetComboProducts()
+        {
+            List<SelectListItem> list = _context.Products.Select(t => new SelectListItem
+            {
+                Text = t.Name,
+                Value = $"{t.Id}"
+            })
+                .OrderBy(t => t.Text)
+                .ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "[Seleccione un producto...]",
+                Value = "0"
+            });
+
+            return list;
+        }
+
     }
 }
