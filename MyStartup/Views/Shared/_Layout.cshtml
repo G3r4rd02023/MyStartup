@@ -20,36 +20,31 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class=" fas fa-house-user"></i> Inicio</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><i class=" fas fa-info-circle"></i> Contacto</a>
                         </li>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Manager"))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Usuarios</a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class=" fas fa-shield-alt"></i> Seguridad</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-controller="Managers" asp-action="Index"><i class=" fas fa-user-alt"></i>Admins</a>
-                                    <a class="dropdown-item" asp-controller="Owners" asp-action="Index"><i class=" fas fa-object-group"></i>Empresarios</a>
-                                    <a class="dropdown-item" asp-controller="Customers" asp-action="Index"><i class=" fas fa-user-alt"></i>Clientes</a>
-                                    <a class="dropdown-item" href="#">Something else here</a>
+                                    <a class="dropdown-item" asp-controller="Managers" asp-action="Index"><i class=" fas fa-house-user"></i> Admins</a>
+                                    <a class="dropdown-item" asp-controller="Owners" asp-action="Index"><i class=" fas fa-object-group"></i> Empresarios</a>
+                                    <a class="dropdown-item" asp-controller="Customers" asp-action="Index"><i class=" fas fa-user-circle"></i> Clientes</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" href="#">Separated link</a>
+                                    <a class="dropdown-item" asp-controller="Categories" asp-action="Index"><i class=" fas fa-clipboard-list"></i> Categorias</a>
+                                    <a class="dropdown-item" asp-controller="Countries" asp-action="Index"><i class=" fas fa-flag"></i> Países</a>
                                 </div>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index"><i class="fas fa-key"></i>Ordenes</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index"><i class="fas fa-clipboard-list"></i> Ordenes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index"><i class=" fas fa-house-user"></i>Empresas</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index"><i class=" fas fa-business-time"></i> Empresas</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Countries" asp-action="Index"><i class="fas fa-file"></i>Países</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index"><i class=" fas fa-home"></i>Productos</a>
-                            </li>
+                            
 
                         }
                     </ul>
@@ -57,10 +52,19 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangeUser"><i class="fas fa-user-circle "></i>@User.Identity.Name</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index"><i class="fas fa-clipboard-list"></i> Ordenes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Salir</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index"><i class=" fas fa-business-time"></i> Empresas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index"><i class=" fas fa-shipping-fast"></i> Productos</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangeUser"><i class="fas fa-user-circle "></i> @User.Identity.Name</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout"><i class=" fas fa-sign-out-alt"></i> Salir</a>
                             </li>
 
                         }
