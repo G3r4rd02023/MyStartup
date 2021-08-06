@@ -5,9 +5,9 @@
     ViewData["Title"] = "Deliver";
 }
 
-<h2>Deliver</h2>
+<h4>Confrimar Entrega</h4>
 
-<h4>Order</h4>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,15 +20,17 @@
                 <div class="input-group date" data-provide="datepicker">
                     <input asp-for="DeliveryDate" class="form-control" />
                     <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
+                       
                     </span>
                 </div>
                 <span asp-validation-for="DeliveryDate" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-                <a asp-action="Index" class="btn btn-success">Back to List</a>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                </button>
+                <a asp-action="Index" class="btn btn-success"><i class=" fas fa-undo-alt"></i></a>
             </div>
         </form>
     </div>

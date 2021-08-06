@@ -4,11 +4,11 @@
     ViewData["Title"] = "Create";
 }
 
-<h2>Crear Orden</h2>
+<h4>Crear Orden</h4>
 
 <p>
-    <a asp-action="AddProduct" class="btn btn-success">Agregar Producto</a>
-    <a asp-action="ConfirmOrder" class="btn btn-primary" id="btnConfirm">Confirmar Orden</a>
+    <a asp-action="AddProduct" class="btn btn-success"><i class=" fas fa-shopping-cart"></i></a>
+    <a asp-action="ConfirmOrder" class="btn btn-primary" id="btnConfirm"><i class="fas fa-check"></i></a>
 </p>
 <table class="table">
     <thead>
@@ -45,9 +45,9 @@
                     @Html.DisplayFor(modelItem => item.Value)
                 </td>
                 <td id="@item.Id">
-                    <a asp-action="Increase" asp-route-id="@item.Id" class="btn btn-warning"><i class="glyphicon glyphicon-plus"></i></a>
-                    <a asp-action="Decrease" asp-route-id="@item.Id" class="btn btn-info"><i class="glyphicon glyphicon-erase"></i></a>
-                    <a asp-action="DeleteItem" asp-route-id="@item.Id" class="btn btn-danger"><i class="glyphicon glyphicon-trash" id="btnDeleteItem"></i></a>
+                    <a asp-action="Increase" asp-route-id="@item.Id" class="btn btn-warning"><i class="fas fa-plus"></i></a>
+                    <a asp-action="Decrease" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-eraser"></i></a>
+                    <a asp-action="DeleteItem" asp-route-id="@item.Id" class="btn btn-danger"><i class="fas fa-trash" id="btnDeleteItem"></i></a>
                 </td>
             </tr>
         }
