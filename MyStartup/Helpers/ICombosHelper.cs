@@ -9,6 +9,10 @@ namespace MyStartup.Helpers
 
         IEnumerable<SelectListItem> GetComboCategories();
 
+        IEnumerable<SelectListItem> GetComboCompanies();
+
         IEnumerable<SelectListItem> GetComboProducts();
+
+
     }
 }

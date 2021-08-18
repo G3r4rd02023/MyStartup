@@ -61,6 +61,7 @@ namespace MyStartup.Helpers
             return new Product
             {
                 Category = await _context.Categories.FindAsync(model.CategoryId),
+                Company = await _context.Companies.FindAsync(model.CompanyId),
                 Description = model.Description,
                 Id = isNew ? 0 : model.Id,
                 IsActive = model.IsActive,
@@ -79,6 +80,9 @@ namespace MyStartup.Helpers
                 Categories = _combosHelper.GetComboCategories(),
                 Category = product.Category,
                 CategoryId = product.Category.Id,
+                Companies = _combosHelper.GetComboCompanies(),
+                Company = product.Company,
+                CompanyId = product.Company.Id,
                 Description = product.Description,
                 Id = product.Id,
                 IsActive = product.IsActive,

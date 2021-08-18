@@ -32,6 +32,7 @@ namespace MyStartup.Controllers
         {
             return View(await _context.Products
                 .Include(p => p.Category)
+                .Include(p => p.Company)
                 .Include(p => p.ProductImages)
                 .ToListAsync());
         }
@@ -46,6 +47,7 @@ namespace MyStartup.Controllers
 
             Product product = await _context.Products
                 .Include(c => c.Category)
+                .Include(p => p.Company)
                 .Include(c => c.ProductImages)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
@@ -62,6 +64,7 @@ namespace MyStartup.Controllers
             ProductViewModel model = new ProductViewModel
             {
                 Categories = _combosHelper.GetComboCategories(),
+                Companies = _combosHelper.GetComboCompanies(),
                 IsActive = true
             };
 
@@ -111,6 +114,7 @@ namespace MyStartup.Controllers
             }
 
             model.Categories = _combosHelper.GetComboCategories();
+            model.Companies = _combosHelper.GetComboCompanies();
             return View(model);
         }
 
@@ -125,6 +129,7 @@ namespace MyStartup.Controllers
 
             Product product = await _context.Products
                  .Include(p => p.Category)
+                 .Include(p => p.Company)
                  .Include(p => p.ProductImages)
                  .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -183,6 +188,7 @@ namespace MyStartup.Controllers
             }
 
             model.Categories = _combosHelper.GetComboCategories();
+            model.Companies = _combosHelper.GetComboCompanies();
             return View(model);
         }
 
@@ -194,7 +200,7 @@ namespace MyStartup.Controllers
                 return NotFound();
             }
 
-            Product product = await _context.Products
+            var product = await _context.Products
                 .Include(p => p.ProductImages)
                 .FirstOrDefaultAsync(p => p.Id == id);
 
@@ -203,17 +209,11 @@ namespace MyStartup.Controllers
                 return NotFound();
             }
 
-            try
-            {
-                _context.Products.Remove(product);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-            }
+           
+             _context.Products.Remove(product);
+             await _context.SaveChangesAsync();
+             return RedirectToAction(nameof(Index));
 
-            return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> AddImage(int? id)
