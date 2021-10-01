@@ -72,7 +72,7 @@ namespace MyStartup.Controllers
 
                 try
                 {
-                    Company company = _converterHelper.ToCompany(model, true, path);
+                    Company company = await _converterHelper.ToCompanyAsync(model, true, path);
                     _context.Add(company);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
@@ -131,7 +131,7 @@ namespace MyStartup.Controllers
 
                 try
                 {
-                    Company company = _converterHelper.ToCompany(model, false, path);
+                    Company company = await _converterHelper.ToCompanyAsync(model, false, path);
                     _context.Update(company);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));

@@ -5,6 +5,7 @@ using MyStartup.Data;
 using MyStartup.Data.Entities;
 using MyStartup.Helpers;
 using MyStartup.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -199,7 +200,66 @@ namespace MyStartup.Controllers
             await _userHelper.DeleteUserAsync(owner.User.Email);
             return RedirectToAction(nameof(Index));
         }
-     
+
+        public async Task<IActionResult> AddCompany(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var owner = await _context.Owners.FindAsync(id);
+
+            if (owner == null)
+            {
+                return NotFound();
+            }
+
+            var model = new CompanyViewModel
+            {
+                OwnerId = owner.Id,                
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddCompany(CompanyViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string path = string.Empty;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+                }
+                try
+                {
+                    var company = await _converterHelper.ToCompanyAsync(model, true, path);
+                    _context.Companies.Add(company);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                    //return RedirectToAction("Details", new { id = company.Id });
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "There are a record with the same name.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }           
+            return View(model);
+        }
 
         private bool OwnerExists(int id)
         {

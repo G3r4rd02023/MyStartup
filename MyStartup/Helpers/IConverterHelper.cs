@@ -10,7 +10,7 @@ namespace MyStartup.Helpers
 
         CategoryViewModel ToCategoryViewModel(Category category);
 
-        Company ToCompany(CompanyViewModel model, bool isNew, string path);
+        Task<Company> ToCompanyAsync(CompanyViewModel model, bool isNew, string path);
 
         CompanyViewModel ToCompanyViewModel(Company company);
 

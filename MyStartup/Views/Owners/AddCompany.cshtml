@@ -1,0 +1,28 @@
+﻿
+@model MyStartup.Models.CompanyViewModel
+
+@{
+    ViewData["Title"] = "Add Company";
+}
+
+<h4>Empresa</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddCompany" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="OwnerId" />
+
+            <partial name="_Company" />
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-save"></i>
+                </button>
+                <a asp-action="Details" asp-route-id="@Model.OwnerId" class="btn btn-success"><i class=" fas fa-undo-alt"></i></a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

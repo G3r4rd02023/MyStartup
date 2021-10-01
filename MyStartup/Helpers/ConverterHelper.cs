@@ -36,13 +36,14 @@ namespace MyStartup.Helpers
             };
         }
 
-        public Company ToCompany(CompanyViewModel model, bool isNew, string path)
+        public async Task<Company> ToCompanyAsync(CompanyViewModel model, bool isNew, string path)
         {
             return new Company
             {
                 Id = isNew ? 0 : model.Id,
                 ImageUrl = path,
-                Name = model.Name
+                Name = model.Name,
+                Owner = await _context.Owners.FindAsync(model.OwnerId)
             };
         }
 
@@ -52,7 +53,9 @@ namespace MyStartup.Helpers
             {
                 Id = company.Id,
                 ImageUrl = company.ImageUrl,
-                Name = company.Name
+                Name = company.Name,
+                Owner = company.Owner,
+                OwnerId = company.Owner.Id
             };
         }
 
