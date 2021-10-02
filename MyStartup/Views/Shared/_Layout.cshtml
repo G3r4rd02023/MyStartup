@@ -12,68 +12,58 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src ="~/images/Startup Logo.png" width="50" height="50"/></a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><img src="~/images/Startup Logo.png" height="50" width="50" /></a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index"><i class=" fas fa-house-user"></i> Inicio</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy"><i class=" fas fa-info-circle"></i> Contacto</a>
-                        </li>
                         @if (User.Identity.IsAuthenticated && User.IsInRole("Manager"))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class=" fas fa-shield-alt"></i> Seguridad</a>
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class=" fas fa-seedling"></i> Mantenimiento</a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" asp-controller="Managers" asp-action="Index"><i class=" fas fa-house-user"></i> Admins</a>
-                                    <a class="dropdown-item" asp-controller="Owners" asp-action="Index"><i class=" fas fa-object-group"></i> Empresarios</a>
-                                    <a class="dropdown-item" asp-controller="Customers" asp-action="Index"><i class=" fas fa-user-circle"></i> Clientes</a>
+                                    <a class="dropdown-item" asp-controller="Countries" asp-action="Index"><i class=" fas fa-boxes"></i> Países</a>
+                                    <a class="dropdown-item" asp-controller="Categories" asp-action="Index"><i class=" fas fa-procedures"></i> Categorías</a>
                                     <div class="dropdown-divider"></div>
-                                    <a class="dropdown-item" asp-controller="Categories" asp-action="Index"><i class=" fas fa-clipboard-list"></i> Categorias</a>
-                                    <a class="dropdown-item" asp-controller="Countries" asp-action="Index"><i class=" fas fa-flag"></i> Países</a>
+                                    <a class="dropdown-item" asp-controller="Owners" asp-action="Index"><i class=" fas fa-boxes"></i> Emprendedores</a>
+                                    <a class="dropdown-item" asp-controller="Customers" asp-action="Index"><i class=" fas fa-procedures"></i> Clientes</a>
                                 </div>
                             </li>
-                            @*<li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index"><i class="fas fa-clipboard-list"></i> Ordenes</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index"><i class=" fas fa-business-time"></i> Empresas</a>
-                            </li>*@
-                            
-
                         }
                     </ul>
                     <ul class="navbar-nav flex-grow-1">
+                        @if (User.Identity.IsAuthenticated && User.IsInRole("Owner"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false"><i class=" fas fa-car-crash"></i> Mantenimiento</a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" asp-controller="Owners" asp-action="Index"><i class=" fas fa-boxes"></i> Emprendedores</a>
+                                    <div class="dropdown-divider"></div>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index"><i class="fas fa-clipboard-list"></i> Ordenes</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index"><i class=" fas fa-shopping-bag"></i> Productos</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Companies" asp-action="Index"><i class=" fas fa-business-time"></i> Empresas</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Orders" asp-action="Index"><i class=" fas fa-shopping-cart"></i> Ordenes</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Products" asp-action="Index"><i class=" fas fa-shipping-fast"></i> Productos</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangeUser">@User.Identity.Name</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="ChangeUser"><i class="fas fa-user-circle "></i> @User.Identity.Name</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Cerrar Sesión</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout"><i class=" fas fa-sign-out-alt"></i> Salir</a>
-                            </li>
-
                         }
                         else
                         {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Iniciar Sesión><i class="fas fa-user-shield "></i></a>
-                            </li>
-
+                            <li><a asp-area="" asp-controller="Account" asp-action="Login">Iniciar Sesión</a></li>
                         }
                     </ul>
                 </div>

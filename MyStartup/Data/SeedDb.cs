@@ -24,8 +24,8 @@ namespace MyStartup.Data
             await CheckCountriesAsync();          
             await CheckRoles();
             var manager = await CheckUserAsync("0801-1992-11010", "Gerardo", "Antonio", "glanza007@gmail.com", "33077964", "Calle El paraiso", "Manager");
-            var owner = await CheckUserAsync("0801-1998-10201", "Bruce", "Willis", "brucewillis@hotmail.com", "3534 2747", "Calle Luna Calle Sol", "Owner");
-            var lessee = await CheckUserAsync("0801-1990-13030", "Richard", "Gere", "richard.gere@globant.com", "35032747", "Calle Luna Calle Sol", "Customer");          
+            var owner = await CheckUserAsync("0801-1998-10201", "Maria Celeste", "Valle", "maria.celeste@gmail.com", "3534 2747", "Calle Luna Calle Sol", "Owner");
+            var lessee = await CheckUserAsync("0801-1990-13030", "Carlos Antonio", "Montoya", "carlos.antony@gmail.com", "35032747", "Calle Luna Calle Sol", "Customer");          
             await CheckManagerAsync(manager);
             await CheckOwnersAsync(owner);
             await CheckCustomersAsync(lessee);
@@ -79,6 +79,8 @@ namespace MyStartup.Data
                 await _context.SaveChangesAsync();
             }
         }
+
+        
 
         private async Task CheckOwnersAsync(User user)
         {

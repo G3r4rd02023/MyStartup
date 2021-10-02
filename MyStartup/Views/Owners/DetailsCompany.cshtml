@@ -1,4 +1,5 @@
-﻿@model MyStartup.Data.Entities.Owner
+﻿
+@model MyStartup.Data.Entities.Company
 
 @{
     ViewData["Title"] = "Details";
@@ -6,86 +7,73 @@
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css" />
 
+<h4><strong> Detalles Empresa </strong></h4>
 
 <div>
-    <h4>Empresario</h4>
+    <h5>Empresas</h5>
     <hr />
-    <dl class="row">
-    </dl>
+    <div class="row">
+        <div class="col-md-8">
+            <dl class="row">
+                <dt class="col-sm-3">
+                    @Html.DisplayNameFor(model => model.Name)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Name)
+                </dd>
+            </dl>
+        </div>
+        <div class="col-md-4">
+            <img src="@Model.ImageFullPath" style="width: 200px; height: 200px; max-width: 100%; height: auto;" />
+        </div>
+    </div>
 </div>
 <div>
-    <dl class="dl-horizontal">
-        <dt>
-            DNI
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.Document)
-        </dd>
-        <dt>
-            Nombre
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.FullName)
-        </dd>
+    <a asp-action="AddProduct" asp-route-id="@Model.Id" class="btn btn-primary"><i class=" fas fa-plus-square"></i></a>
+    <a asp-action="EditProduct" asp-route-id="@Model.Id" class="btn btn-warning"><i class=" fas fa-edit"></i></a>
+    <a asp-action="Details" asp-route-id="@Model.Owner.Id" class="btn btn-success"><i class=" fas fa-undo-alt"></i></a>
+</div>
+<br />
 
-        <dt>
-            @Html.DisplayNameFor(model => model.User.Email)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.Email)
-        </dd>
-        <dt>
-            @Html.DisplayNameFor(model => model.User.Address)
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.Address)
-        </dd>
-        <dt>
-            Teléfono
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.User.PhoneNumber)
-        </dd>
-    </dl>   
-</div>
-<div>
-    <a asp-action="AddCompany" asp-route-id="@Model.Id" class="btn btn-primary"><i class="fas fa-business-time"></i></a>
-    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning"><i class=" fas fa-list-alt"></i></a>
-    <a asp-action="Index"><i class=" btn btn-success"><i class=" fas fa-undo-alt"></i></i></a>
-</div>
-<hr />
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h5 class="panel-title">Empresas</h5>
+                <h4 class="panel-title">Productos</h4>
             </div>
             <div class="panel-body">
                 <table class="table table-hover table-responsive table-striped" id="MyTable">
                     <thead>
                         <tr>
                             <th>
-                                @Html.DisplayNameFor(model => model.Companies.FirstOrDefault().Name)
+                                @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Name)
                             </th>
                             <th>
-                                Foto
+                                @Html.DisplayNameFor(model => model.Products.FirstOrDefault().Price)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Products.FirstOrDefault().FirstImage)
                             </th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.Companies)
+                        @foreach (var item in Model.Products)
                         {
                             <tr>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
-                                    <img src="@item.ImageFullPath" style="width:100px;height:100px;max-width: 100%; height: auto;" />
+                                    @Html.DisplayFor(modelItem => item.Price)
                                 </td>
                                 <td>
-                                    <a asp-action="EditCompany" asp-route-id="@item.Id" class="btn btn-warning"><i class=" fas fa-pencil-alt"></i></a>
-                                    <a asp-action="DetailsCompany" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-shopping-bag"></i></a>
+                                    <img src="@item.FirstImage" style="width:100px;height:100px;max-width: 100%; height: auto;" />
+                                </td>
+
+                                <td>
+                                    <a asp-action="EditProduct" asp-route-id="@item.Id" class="btn btn-warning"><i class=" fas fa-pencil-alt"></i></a>
+                                    <a asp-action="DetailsProduct" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-align-justify"></i></a>
                                     <button data-id="@item.Id" class="btn btn-danger deleteItem" data-toggle="modal" data-target="#deleteDialog"><i class=" fas fa-trash-alt"></i></button>
                                 </td>
                             </tr>
@@ -96,6 +84,7 @@
         </div>
     </div>
 </div>
+
 <partial name="_DeleteDialog" />
 
 @section Scripts {
@@ -115,7 +104,8 @@
                 ]
             });
             // Delete item
-            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Owners/DeleteCompany/', false);
+            sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Owners/DeleteProduct/', false);
         });
     </script>
 }
+

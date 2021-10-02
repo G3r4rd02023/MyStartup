@@ -64,7 +64,7 @@ namespace MyStartup.Controllers
 
                 if (model.ImageFile != null)
                 {
-                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile,"Categories");
                 }
 
                 try
@@ -123,7 +123,7 @@ namespace MyStartup.Controllers
 
                 if (model.ImageFile != null)
                 {
-                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile,"Categories");
                 }
 
                 try

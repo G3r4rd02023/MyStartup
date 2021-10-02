@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 namespace MyStartup.Helpers
 {
     public class ImageHelper : IImageHelper
+    {
+        public async Task<string> UploadImageAsync(IFormFile imageFile, string folder)
         {
-            public async Task<string> UploadImageAsync(IFormFile imageFile)
+            string guid = Guid.NewGuid().ToString();
+            string file = $"{guid}.jpg";
+            string path = Path.Combine(
+                Directory.GetCurrentDirectory(),
+                $"wwwroot\\images\\{folder}",
+                file);
+
+            using (FileStream stream = new FileStream(path, FileMode.Create))
             {
-                var guid = Guid.NewGuid().ToString();
-                var file = $"{guid}.jpg";
-                var path = Path.Combine(
-                    Directory.GetCurrentDirectory(),
-                    "wwwroot\\images\\App",
-                    file);
-
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await imageFile.CopyToAsync(stream);
-                }
-
-                return $"~/images/App/{file}";
+                await imageFile.CopyToAsync(stream);
             }
+
+            return $"~/images/{folder}/{file}";
         }
+    }
 
 }

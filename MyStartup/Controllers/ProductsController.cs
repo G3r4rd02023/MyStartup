@@ -85,7 +85,7 @@ namespace MyStartup.Controllers
 
                     if (model.ImageFile != null)
                     {
-                        path = await _imageHelper.UploadImageAsync(model.ImageFile);
+                        path = await _imageHelper.UploadImageAsync(model.ImageFile,"Products");
                         product.ProductImages = new List<ProductImage>
                 {
                     new ProductImage { ImageUrl = path }
@@ -156,7 +156,7 @@ namespace MyStartup.Controllers
 
                     if (model.ImageFile != null)
                     {
-                        path = await _imageHelper.UploadImageAsync(model.ImageFile);
+                        path = await _imageHelper.UploadImageAsync(model.ImageFile,"Products");
                         if (product.ProductImages == null)
                         {
                             product.ProductImages = new List<ProductImage>();
@@ -250,7 +250,7 @@ namespace MyStartup.Controllers
                 try
                 {
                     string path = string.Empty;
-                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile,"Products");
                     if (product.ProductImages == null)
                     {
                         product.ProductImages = new List<ProductImage>();

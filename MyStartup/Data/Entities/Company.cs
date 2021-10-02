@@ -21,8 +21,8 @@ namespace MyStartup.Data.Entities
             ? null
             : $"https://localhost:44385{ImageUrl[1..]}";
 
-       
 
+        public ICollection<Product> Products { get; set; }
         public ICollection<CompanyCustomer> CompanyCustomers { get; set; }
 
         public Owner Owner { get; set; }

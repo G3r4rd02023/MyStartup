@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MyStartup.Controllers
 {
-    [Authorize(Roles = "Manager")]
+   
     public class OwnersController : Controller
     {
         private readonly DataContext _context;
@@ -34,10 +34,25 @@ namespace MyStartup.Controllers
         // GET: Owners
         public async Task<IActionResult> Index()
         {
+            var user = await _userHelper.GetUserAsync(User.Identity.Name);
+
+            if (user == null)
+            {
+                return null;
+            }
+
+            if (await _userHelper.IsUserInRoleAsync(user, "Manager"))
+            {
+                return View(await _context.Owners
+                .Include(o => o.User)
+               .ToListAsync());
+            }
+
             return View(await _context.Owners
-                 .Include(o => o.User)
-                .ToListAsync());
-        }
+               .Include(o => o.User)
+               .Where(x => x.User.UserName == User.Identity.Name)
+              .ToListAsync());
+         }       
 
         // GET: Owners/Details/5
         public async Task<IActionResult> Details(int? id)
@@ -232,7 +247,7 @@ namespace MyStartup.Controllers
 
                 if (model.ImageFile != null)
                 {
-                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile,"Companies");
                 }
                 try
                 {
@@ -261,9 +276,247 @@ namespace MyStartup.Controllers
             return View(model);
         }
 
-        private bool OwnerExists(int id)
+        public async Task<IActionResult> EditCompany(int? id)
         {
-            return _context.Owners.Any(e => e.Id == id);
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Company company = await _context.Companies
+                .Include(x => x.Owner)
+                .Include(x => x.Products)                 
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            CompanyViewModel model = _converterHelper.ToCompanyViewModel(company);
+            return View(model);
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditCompany(int id, CompanyViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+
+            string path = string.Empty;
+
+            if (model.ImageFile != null)
+            {
+                path = await _imageHelper.UploadImageAsync(model.ImageFile, "Companies");
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    Company company = await _converterHelper.ToCompanyAsync(model, false, path);
+                    _context.Companies.Update(company);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Details), new { id = model.OwnerId });
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe una empresa con ese nombre.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }                        
+            return View(model);
+        }
+
+        public async Task<IActionResult> DetailsCompany(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var company = await _context.Companies
+                .Include(o => o.Owner)
+                .Include(c => c.Products)
+                .ThenInclude(p => p.ProductImages)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            return View(company);
+        }
+
+        public async Task<IActionResult> AddProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var company = await _context.Companies
+                .Include(c => c.Products)
+               .FirstOrDefaultAsync(c => c.Id == id);
+
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            var model = new ProductViewModel
+            {
+                CompanyId = company.Id,
+                Categories = _combosHelper.GetComboCategories(),
+            };
+
+            return View(model);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddProduct(ProductViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                
+                var company = await _context.Companies
+                    .Include(c => c.Products)
+                    .FirstOrDefaultAsync(x => x.Id == model.CompanyId);
+
+                if (company == null)
+                {
+                    return NotFound();
+                }
+
+                string path = string.Empty;
+
+                if (model.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile, "Products");
+                }
+
+                Product product = await _converterHelper.ToProductAsync(model, true, path);
+
+                if (product.ProductImages == null)
+                {
+                    product.ProductImages = new List<ProductImage>();
+                }
+
+                product.ProductImages.Add(new ProductImage
+                {
+                    ImageUrl = path
+                });
+
+                try
+                {
+                    company.Products.Add(product);
+                    _context.Companies.Update(company);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(DetailsCompany), new { id = company.Id });
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe un producto con ese nombre.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+            model.Categories = _combosHelper.GetComboCategories();
+            return View(model);
+        }
+
+        public async Task<IActionResult> DetailsProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Product product = await _context.Products
+                .Include(x => x.Company)               
+                .Include(x => x.ProductImages)                
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            return View(product);
+        }
+
+        public async Task<IActionResult> AddProductImage(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Product product = await _context.Products
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            AddProductImageViewModel model = new()
+            {
+                ProductId = product.Id
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddProductImage(AddProductImageViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                string path = await _imageHelper.UploadImageAsync(model.ImageFile,"Products");
+                Product product = await _context.Products
+                    .Include(x => x.ProductImages)
+                    .FirstOrDefaultAsync(x => x.Id == model.ProductId);
+                if (product.ProductImages == null)
+                {
+                    product.ProductImages = new List<ProductImage>();
+                }
+
+                product.ProductImages.Add(new ProductImage
+                {
+                    ImageUrl = path
+                });
+
+                _context.Products.Update(product);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(DetailsProduct), new { id = product.Id });
+            }
+
+            return View(model);
+
+        }
+
     }
 }

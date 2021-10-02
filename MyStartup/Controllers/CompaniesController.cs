@@ -67,7 +67,7 @@ namespace MyStartup.Controllers
 
                 if (model.ImageFile != null)
                 {
-                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile,"Companies");
                 }
 
                 try
@@ -81,7 +81,7 @@ namespace MyStartup.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "There are a record with the same name.");
+                        ModelState.AddModelError(string.Empty, "Ya existe una empresa con ese nombre.");
                     }
                     else
                     {
@@ -126,7 +126,7 @@ namespace MyStartup.Controllers
 
                 if (model.ImageFile != null)
                 {
-                    path = await _imageHelper.UploadImageAsync(model.ImageFile);
+                    path = await _imageHelper.UploadImageAsync(model.ImageFile,"Companies");
                 }
 
                 try
@@ -141,7 +141,7 @@ namespace MyStartup.Controllers
                 {
                     if (dbUpdateException.InnerException.Message.Contains("duplicate"))
                     {
-                        ModelState.AddModelError(string.Empty, "There are a record with the same name.");
+                        ModelState.AddModelError(string.Empty, "Ya existe una empresa con ese nombre.");
                     }
                     else
                     {
@@ -176,11 +176,6 @@ namespace MyStartup.Controllers
             _context.Companies.Remove(company);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
-        }
-
-        private bool CompanyExists(int id)
-        {
-            return _context.Companies.Any(e => e.Id == id);
         }
     }
 }
