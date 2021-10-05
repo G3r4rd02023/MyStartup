@@ -361,6 +361,26 @@ namespace MyStartup.Controllers
             return View(company);
         }
 
+        public async Task<IActionResult> DeleteCompany(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Company company = await _context.Companies
+                .Include(x => x.Owner)
+                .Include(x => x.Products)               
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            _context.Companies.Remove(company);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Details), new { id = company.Owner.Id });
+        }
         public async Task<IActionResult> AddProduct(int? id)
         {
             if (id == null)
@@ -467,6 +487,120 @@ namespace MyStartup.Controllers
             return View(product);
         }
 
+        public async Task<IActionResult> EditProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var company = await _context.Companies
+                .Include(c => c.Products)
+               .FirstOrDefaultAsync(c => c.Id == id);
+
+            Product product = await _context.Products
+                 .Include(p => p.Category)
+                 .Include(p => p.Company)
+                 .Include(p => p.ProductImages)
+                 .FirstOrDefaultAsync(p => p.Id == id);
+
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            if (company == null)
+            {
+                return NotFound();
+            }
+
+            var model = new ProductViewModel
+            {
+                CompanyId = company.Id,
+                Categories = _combosHelper.GetComboCategories(),
+            };
+
+            model = _converterHelper.ToProductViewModel(product);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> EditProduct(int id,ProductViewModel model)
+        {
+            if (id != model.Id)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {                             
+                try
+                {                                      
+                    string path = string.Empty;
+                    Product product = await _converterHelper.ToProductAsync(model, false, path);
+
+                    if (model.ImageFile != null)
+                    {
+                        path = await _imageHelper.UploadImageAsync(model.ImageFile, "Products");
+
+                        if (product.ProductImages == null)
+                        {
+                            product.ProductImages = new List<ProductImage>();
+                        }
+
+                        product.ProductImages.Add(new ProductImage { ImageUrl = path });
+                    }
+
+                    
+                    _context.Products.Update(product);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(DetailsCompany), new { id = model.CompanyId });
+
+                }
+                catch (DbUpdateException dbUpdateException)
+                {
+                    if (dbUpdateException.InnerException.Message.Contains("duplicate"))
+                    {
+                        ModelState.AddModelError(string.Empty, "Ya existe un producto con ese nombre.");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, dbUpdateException.InnerException.Message);
+                    }
+                }
+                catch (Exception exception)
+                {
+                    ModelState.AddModelError(string.Empty, exception.Message);
+                }
+            }
+
+            model.Categories = _combosHelper.GetComboCategories();            
+            return View(model);
+        }
+
+        public async Task<IActionResult> DeleteProduct(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Product product = await _context.Products
+                .Include(x => x.Company)
+                .Include(x => x.ProductImages)
+                .FirstOrDefaultAsync(x => x.Id == id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            _context.Products.Remove(product);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(DetailsCompany), new { id = product.Company.Id });
+        }
+
         public async Task<IActionResult> AddProductImage(int? id)
         {
             if (id == null)
@@ -518,5 +652,31 @@ namespace MyStartup.Controllers
 
         }
 
+        public async Task<IActionResult> DeleteImage(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            ProductImage productImage = await _context.ProductImages
+                .Include(x => x.Product)
+                .FirstOrDefaultAsync(x => x.Id == id);
+
+            if (productImage == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                _context.ProductImages.Remove(productImage);
+                await _context.SaveChangesAsync();
+            }
+            catch { }
+
+
+            return RedirectToAction(nameof(DetailsProduct), new { id = productImage.Product.Id });
+        }
     }
 }

@@ -137,7 +137,18 @@ namespace MyStartup.Controllers
             {
                 return NotFound();
             }
-            ProductViewModel model = _converterHelper.ToProductViewModel(product);
+
+            var company = await _context.Companies
+               .Include(c => c.Products)
+              .FirstOrDefaultAsync(c => c.Id == id);
+
+            var model = new ProductViewModel
+            {
+                CompanyId = company.Id,
+                Categories = _combosHelper.GetComboCategories(),
+            };
+
+             model = _converterHelper.ToProductViewModel(product);
             return View(model);
         }
 
@@ -187,8 +198,7 @@ namespace MyStartup.Controllers
                 }
             }
 
-            model.Categories = _combosHelper.GetComboCategories();
-            model.Companies = _combosHelper.GetComboCompanies();
+            model.Categories = _combosHelper.GetComboCategories();            
             return View(model);
         }
 

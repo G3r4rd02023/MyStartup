@@ -13,12 +13,14 @@ namespace MyStartup.Controllers
         private readonly IUserHelper _userHelper;
         private readonly DataContext _dataContext;
         private readonly ICombosHelper _combosHelper;
+        private readonly IImageHelper _imageHelper;
 
-        public AccountController(IUserHelper userHelper,DataContext dataContext, ICombosHelper combosHelper)
+        public AccountController(IUserHelper userHelper,DataContext dataContext, ICombosHelper combosHelper,IImageHelper imageHelper)
         {
             _userHelper = userHelper;
             _dataContext = dataContext;
             _combosHelper = combosHelper;
+            _imageHelper = imageHelper;
         }
 
         public IActionResult Login()
@@ -75,16 +77,24 @@ namespace MyStartup.Controllers
         {
             if (ModelState.IsValid)
             {
+                                             
                 var role = "Owner";
                 if (view.RoleId == 1)
                 {
                     role = "Customer";
                 }
 
-                var user = await _userHelper.AddUser(view, role);
+                string path = string.Empty;
+
+                if (view.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsync(view.ImageFile, "Users");
+                }
+
+                var user = await _userHelper.AddUser(view, role, path);
                 if (user == null)
                 {
-                    ModelState.AddModelError(string.Empty, "This email is already used.");
+                    ModelState.AddModelError(string.Empty, "Este email ya esta siendo utilizado por otro usuario.");
                     return View(view);
                 }
 
@@ -94,6 +104,8 @@ namespace MyStartup.Controllers
                     {                       
                         User = user
                     };
+
+                    
 
                     _dataContext.Customers.Add(customer);
                     await _dataContext.SaveChangesAsync();
@@ -141,7 +153,8 @@ namespace MyStartup.Controllers
                 Document = user.Document,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                PhoneNumber = user.PhoneNumber
+                PhoneNumber = user.PhoneNumber,
+                ImageUrl = user.ImageUrl
             };
 
             return View(view);
@@ -153,6 +166,13 @@ namespace MyStartup.Controllers
         {
             if (ModelState.IsValid)
             {
+                string path = string.Empty;
+
+                if (view.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsync(view.ImageFile,"Users");
+                }
+
                 var user = await _userHelper.GetUserByEmailAsync(User.Identity.Name);
 
                 user.Document = view.Document;
@@ -160,7 +180,7 @@ namespace MyStartup.Controllers
                 user.LastName = view.LastName;
                 user.Address = view.Address;
                 user.PhoneNumber = view.PhoneNumber;
-
+                user.ImageUrl = path;
                 await _userHelper.UpdateUserAsync(user);
                 return RedirectToAction("Index", "Home");
             }

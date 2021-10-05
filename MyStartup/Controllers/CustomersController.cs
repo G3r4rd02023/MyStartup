@@ -15,11 +15,12 @@ namespace MyStartup.Controllers
     {
         private readonly DataContext _context;
         private readonly IUserHelper _userHelper;
-
-        public CustomersController(DataContext context,IUserHelper userHelper)
+        private readonly IImageHelper _imageHelper;
+        public CustomersController(DataContext context,IUserHelper userHelper,IImageHelper imageHelper)
         {
             _context = context;
             _userHelper = userHelper;
+            _imageHelper = imageHelper;
         }
 
         // GET: Customers
@@ -64,7 +65,15 @@ namespace MyStartup.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userHelper.AddUser(view, "Customer");
+
+                string path = string.Empty;
+
+                if (view.ImageFile != null)
+                {
+                    path = await _imageHelper.UploadImageAsync(view.ImageFile, "Users");
+                }
+
+                var user = await _userHelper.AddUser(view, "Customer",path);
                 if (user == null)
                 {
                     ModelState.AddModelError(string.Empty, "This email is already used.");

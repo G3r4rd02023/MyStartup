@@ -80,7 +80,7 @@ namespace MyStartup.Helpers
                 return await _userManager.UpdateAsync(user);
             }
 
-        public async Task<User> AddUser(AddUserViewModel view, string role)
+        public async Task<User> AddUser(AddUserViewModel view, string role,string path)
         {
             var user = new User
             {
@@ -90,7 +90,8 @@ namespace MyStartup.Helpers
                 FirstName = view.FirstName,
                 LastName = view.LastName,
                 PhoneNumber = view.PhoneNumber,
-                UserName = view.Username
+                UserName = view.Username,
+                ImageUrl = path,
             };
 
             var result = await AddUserAsync(user, view.Password);

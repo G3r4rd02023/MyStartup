@@ -23,7 +23,7 @@ namespace MyStartup.Helpers
 
         Task<IdentityResult> UpdateUserAsync(User user);
 
-        Task<User> AddUser(AddUserViewModel view, string role);
+        Task<User> AddUser(AddUserViewModel view, string role,string path);
         Task<IdentityResult> ChangePasswordAsync(User user, string oldPassword, string newPassword);
 
         Task<bool> DeleteUserAsync(string email);

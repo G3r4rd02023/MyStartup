@@ -14,7 +14,7 @@ namespace MyStartup.Data.Entities
         public string Name { get; set; }
 
         public ICollection<City> Cities { get; set; }
-
+       
         [DisplayName("# Ciudades")]
         public int CitiesNumber => Cities == null ? 0 : Cities.Count;
     }
