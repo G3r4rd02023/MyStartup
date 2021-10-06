@@ -11,6 +11,7 @@ namespace MyStartup.Models
         [Range(1, int.MaxValue, ErrorMessage = "Debes seleccionar un producto.")]
         public int ProductId { get; set; }
 
+        [Display(Name = "Cantidad")]
         [Range(0.0001, double.MaxValue, ErrorMessage = "La cantidad debe ser un numero positivo")]
         public double Quantity { get; set; }
 

@@ -21,7 +21,8 @@ namespace MyStartup.Data
         public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync();
-            await CheckCountriesAsync();          
+            await CheckCountriesAsync();
+            await CheckCategoriesAsync();
             await CheckRoles();
             var manager = await CheckUserAsync("0801-1992-11010", "Gerardo", "Antonio", "glanza007@gmail.com", "33077964", "Calle El paraiso", "Manager");
             var owner = await CheckUserAsync("0801-1998-10201", "Maria Celeste", "Valle", "maria.celeste@gmail.com", "3534 2747", "Calle Luna Calle Sol", "Owner");
@@ -63,6 +64,21 @@ namespace MyStartup.Data
             return user;
         }
 
+        private async Task CheckCategoriesAsync()
+        {
+            if (!_context.Categories.Any())
+            {
+                AddCategory("Ropa");
+                AddCategory("Tecnología");
+                AddCategory("Mascotas");
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        private void AddCategory(string name)
+        {
+            _context.Categories.Add(new Category { Name = name, ImageUrl = $"~/images/Categories/{name}.png" });
+        }
 
         private async Task CheckRoles()
         {

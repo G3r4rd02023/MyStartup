@@ -27,7 +27,7 @@ namespace MyStartup.Helpers
                 return null;
             }
 
-            if (await this.userHelper.IsUserInRoleAsync(user, "Admin"))
+            if (await this.userHelper.IsUserInRoleAsync(user, "Owner"))
             {
                 return this.context.Orders
                     .Include(o => o.User)

@@ -8,7 +8,7 @@
 <br />
 
 <p>
-    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"> Nueva</i></a>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus-square"></i></a>
 </p>
 
 <div class="row">
@@ -62,7 +62,15 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#MyTable').DataTable();
+            $('#MyTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                },
+                "aLengthMenu": [
+                    [25, 50, 100, 200, -1],
+                    [25, 50, 100, 200, "Todos"]
+                ]
+            });
             // Delete item
             sc_deleteDialog.openModal('deleteItem', true, 'btnYesDelete', '/Categories/Delete/', false);
         });

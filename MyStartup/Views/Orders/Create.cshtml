@@ -4,8 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
-<h4>Crear Orden</h4>
-
+<h4><strong> Crear Orden</strong></h4>
+<hr />
 <p>
     <a asp-action="AddProduct" class="btn btn-success"><i class=" fas fa-shopping-cart"></i></a>
     <a asp-action="ConfirmOrder" class="btn btn-primary" id="btnConfirm"><i class="fas fa-check"></i></a>
@@ -58,13 +58,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
-                <h4 class="modal-title">Confirm</h4>
+                <h4 class="modal-title"></h4>
             </div>
             <div class="modal-body">
-                <p>Do you want to confirm the order?</p>
+                <p>Desea confirmar esta Orden?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="btnYesConfirm">Yes</button>
+                <button type="button" class="btn btn-primary" id="btnYesConfirm">Si</button>
                 <button type="button" class="btn btn-success" id="btnNoConfirm">No</button>
             </div>
         </div>
@@ -75,13 +75,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
-                <h4 class="modal-title">Delete</h4>
+                <h4 class="modal-title">Eliminar</h4>
             </div>
             <div class="modal-body">
-                <p>Do you want to delete the product from order?</p>
+                <p>Desea quitar este producto de la Orden?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="btnYesDelete">Delete</button>
+                <button type="button" class="btn btn-danger" id="btnYesDelete">Si</button>
                 <button type="button" class="btn btn-success" id="btnNoDelete">No</button>
             </div>
         </div>

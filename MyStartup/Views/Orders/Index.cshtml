@@ -8,14 +8,14 @@
 <br />
 
 <p>
-    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus"></i> Nueva Orden</a>
+    <a asp-action="Create" class="btn btn-primary"><i class="fas fa-plus-square"></i></a>
 </p>
 
 <div class=" row">
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">Ordenes</h4>
+                <h5 class="panel-title">Ordenes</h5>
             </div>
             <div class="panel-body">
                 <table class="table table-hover table-responsive table-striped" id="MyTable">
@@ -96,13 +96,13 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal"><i class="fa fa-window-close"></i></button>
-                <h4 class="modal-title">Delete</h4>
+                <h4 class="modal-title">Eliminar</h4>
             </div>
             <div class="modal-body">
-                <p>Do you want to delete the order?</p>
+                <p>Desea eliminar esta orden?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" id="btnYesDelete">Delete</button>
+                <button type="button" class="btn btn-danger" id="btnYesDelete">Si</button>
                 <button type="button" class="btn btn-success" id="btnNoDelete">No</button>
             </div>
         </div>
@@ -115,7 +115,15 @@
 
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#MyTable').DataTable();
+            $('#MyTable').DataTable({
+                "language": {
+                    "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Spanish.json"
+                },
+                "aLengthMenu": [
+                    [25, 50, 100, 200, -1],
+                    [25, 50, 100, 200, "Todos"]
+                ]
+            });
             var id = 0;
             $('a[id*=btnDeleteOrder]').click(function () {
                 debugger;
