@@ -31,15 +31,16 @@ namespace MyStartup.Data.Entities
         // TODO: Change the path when publish
         [Display(Name = "Foto")]
         public string ImageFullPath => string.IsNullOrEmpty(ImageUrl)
-            ? $"https://localhost:44385/images/noimage.png"
-            : $"https://localhost:44385{ImageUrl[1..]}";
-            //: $"https://workshopvehicles.azurewebsites.net{ImageUrl.Substring(1)}";
-    
+          ? null
+            : $"https://mystoreweb.azurewebsites.net{ImageUrl.Substring(1)}";
+
 
         [Display(Name = "Usuario")]
         public string FullName => $"{FirstName} {LastName}";
 
         public City City { get; set; }
+
+        public Company Company { get; set; }
         public ICollection<OrderDetailTemp> OrderDetailTemps { get; set; }
         public ICollection<Order> Orders { get; set; }
 

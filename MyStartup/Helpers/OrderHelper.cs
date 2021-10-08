@@ -164,7 +164,7 @@ namespace MyStartup.Helpers
 
             var order = new Order
             {
-                OrderDate = DateTime.Now,
+                OrderDate = DateTime.UtcNow,
                 User = user,
                 Items = details,
             };

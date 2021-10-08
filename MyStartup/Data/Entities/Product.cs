@@ -19,7 +19,8 @@ namespace MyStartup.Data.Entities
         public string Description { get; set; }
 
         [DisplayName("Precio")]
-        [DisplayFormat(DataFormatString = "{0:C2}")]
+        
+        [DisplayFormat(DataFormatString = "{0:N2}")]
         public decimal Price { get; set; }
 
         [DisplayName("Esta Activo")]
@@ -40,7 +41,7 @@ namespace MyStartup.Data.Entities
             {
                 if (ProductImages == null || ProductImages.Count == 0)
                 {
-                    return "https://localhost:44385/wwwroot/images/App/noImage.png";
+                    return "https://mystoreweb.azurewebsites.net/images/Products/noImage.png";
                 }
 
                 return ProductImages.FirstOrDefault().ImageFullPath;

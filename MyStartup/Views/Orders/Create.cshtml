@@ -36,13 +36,13 @@
                     @Html.DisplayFor(modelItem => item.Product.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Price)
+                    <strong>L.</strong> @Html.DisplayFor(modelItem => item.Price)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantity)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Value)
+                    <strong>L.</strong>@Html.DisplayFor(modelItem => item.Value)
                 </td>
                 <td id="@item.Id">
                     <a asp-action="Increase" asp-route-id="@item.Id" class="btn btn-warning"><i class="fas fa-plus"></i></a>

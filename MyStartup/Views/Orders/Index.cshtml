@@ -21,7 +21,7 @@
                 <table class="table table-hover table-responsive table-striped" id="MyTable">
                     <thead>
                         <tr>
-                            @if (this.User.IsInRole("Manager"))
+                            @if (this.User.IsInRole("Owner"))
                             {
                                 <th>
                                     @Html.DisplayNameFor(model => model.User.FullName)
@@ -49,7 +49,7 @@
                         @foreach (var item in Model)
                         {
                             <tr>
-                                @if (this.User.IsInRole("Manager"))
+                                @if (this.User.IsInRole("Owner"))
                                 {
                                     <th>
                                         @Html.DisplayFor(modelItem => item.User.FullName)
@@ -68,14 +68,14 @@
                                     @Html.DisplayFor(modelItem => item.Quantity)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.Value)
+                                    <strong>L.</strong>@Html.DisplayFor(modelItem => item.Value)
                                 </td>
                                 <td id="@item.Id">
-                                    @if (this.User.IsInRole("Manager"))
+                                    @if (this.User.IsInRole("Owner"))
                                     {
                                         <a asp-action="Deliver" asp-route-id="@item.Id" class="btn btn-success" id="btnDeliver"><i class=" fas fa-shipping-fast"></i></a>
                                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-info"><i class="fas fa-list-alt"></i></a>
-                                        <a asp-action="DeleteOrder" asp-route-id="@item.Id" class="btn btn-danger"><i class="glyphicon glyphicon-trash" id="btnDeleteOrder"><i class=" fas fa-trash-alt"></i></i></a>
+                                        <a asp-action="DeleteOrder" asp-route-id="@item.Id" class="btn btn-danger"><i class="fas-fa-trash" id="btnDeleteOrder"><i class=" fas fa-trash-alt"></i></i></a>
                                     }
                                     else
                                     {

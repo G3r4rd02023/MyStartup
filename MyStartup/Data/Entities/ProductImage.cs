@@ -12,7 +12,7 @@ namespace MyStartup.Data.Entities
         // TODO: Change the path when publish
         public string ImageFullPath => string.IsNullOrEmpty(ImageUrl)
             ? null
-           : $"https://localhost:44385{ImageUrl[1..]}";
+            : $"https://mystoreweb.azurewebsites.net{ImageUrl.Substring(1)}";
 
         public Product Product { get; set; }
     }
